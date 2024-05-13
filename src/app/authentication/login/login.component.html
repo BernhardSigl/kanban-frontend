@@ -1,5 +1,39 @@
-<form (ngSubmit)="login()">
-    <input type="username" name="username" [(ngModel)]="username" placeholder="username" required>
-    <input type="password" name="password" [(ngModel)]="password" placeholder="password" required>
-    <button>Login</button>
-</form>
+<div class="content-position">
+  <div class="content-box">
+
+	<h1>Login</h1>
+
+    <form (ngSubmit)="login()">
+
+        <input
+          [disabled]="deactivateFields"
+          class="form-control"
+          type="username"
+          name="username"
+          [(ngModel)]="username"
+          placeholder="Username"
+          required
+        />
+
+        <input
+          [disabled]="deactivateFields"
+          class="form-control"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Password"
+          required
+        />
+
+      <button [disabled]="disabledBtn()" type="submit" class="btn btn-dark">Login</button>
+    </form>
+
+    <br />
+    <span class="register">Not a member? Register <a [routerLink]="['/register']">here</a></span>
+    <br />
+
+  </div>
+</div>
+
+<ngb-alert *ngIf="wrongCredentials">Wrong credentials</ngb-alert>
+

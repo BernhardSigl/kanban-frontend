@@ -1,1 +1,64 @@
-<p>register works!</p>
+<div class="content-position">
+  <div class="content-box">
+
+    <h1>Register</h1>
+
+    <form (ngSubmit)="register()">
+      <input
+        [disabled]="deactivateFields"
+        class="form-control"
+        type="username"
+        name="username"
+        [(ngModel)]="username"
+        placeholder="Username*"
+        required
+      />
+
+      <input
+        [disabled]="deactivateFields"
+        class="form-control"
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        placeholder="Email"
+      />
+
+      <input
+        [disabled]="deactivateFields"
+        class="form-control"
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        placeholder="Password*"
+        required
+      />
+
+      <input
+        [disabled]="deactivateFields"
+        class="form-control"
+        type="password"
+        name="repeatPassword"
+        [(ngModel)]="repeatPassword"
+        placeholder="Repeat password*"
+        required
+      />
+
+      <button [disabled]="disabledBtn()" type="submit" class="btn btn-dark">
+        Register
+      </button>
+    </form>
+
+    <p>(*) required fields</p>
+
+    <br />
+
+    <span class="login"
+      >Back to login? Click <a [routerLink]="['/login']">here</a></span
+    >
+    <br />
+
+  </div>
+</div>
+
+<ngb-alert *ngIf="wrongCredentials">Wrong credentials</ngb-alert>
+
