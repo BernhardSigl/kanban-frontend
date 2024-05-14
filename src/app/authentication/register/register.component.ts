@@ -17,10 +17,13 @@ export class RegisterComponent {
   password: string = '';
   repeatPassword: string = '';
   email: string = '';
+  wrongEmailText: string = `Email isn't valid.`;
+  wrongPasswordText: string = `Passwords don't match.`;
 
   deactivateFields: boolean = false;
   deactivateBtn: boolean = true;
-  wrongCredentials: boolean = false;
+  wrongEmailBoolean: boolean = false;
+  wrongPasswordBoolean: boolean = false;
 
   constructor(
     private as: AuthService,
@@ -33,26 +36,63 @@ export class RegisterComponent {
 
   async register() {
     this.deactivateFields = true;
-    try {
-      let resp: any = await this.as.loginWithUsernameAndPassword(
-        this.username,
-        this.password
-      );
-      localStorage.setItem('token', resp['token']);
-      localStorage.setItem('author', resp['user_id']);
-      this.router.navigateByUrl('/kanban');
-      console.log('resp: ', resp);
-    } catch (e) {
-      console.warn('Error: ', e);
-      this.wrongCredentials = true;
-      setTimeout(() => {
-        this.wrongCredentials = false;
-      }, 3000);
+    const valid = await this.checkCredentials();
+    if (valid) {
+      try {
+        console.log(this.email);
+        let resp: any = await this.as.registerUser(
+          this.username,
+          this.email,
+          this.password
+        );
+        localStorage.setItem('token', resp['token']);
+        localStorage.setItem('author', resp['user_id']);
+        this.router.navigateByUrl('/kanban');
+        console.log('resp: ', resp);
+      } catch (e) {
+        console.warn('Error: ', e);
+      }
+      this.deactivateFields = false;
     }
-    this.deactivateFields = false;
   }
 
   disabledBtn(): boolean {
-    return this.username === '' || this.password === '' || this.repeatPassword === '' || (this.password.length !== this.repeatPassword.length);
+    return (
+      this.username === '' ||
+      this.password === '' ||
+      this.repeatPassword === '' ||
+      this.password.length !== this.repeatPassword.length
+    );
+  }
+
+  showAlert(alertMsg: string) {
+    this.deactivateFields = false;
+    if (alertMsg === 'password') {
+      this.wrongPasswordBoolean = true;
+      setTimeout(() => {
+        this.wrongPasswordBoolean = false;
+      }, 3000);
+    } else if (alertMsg === 'email') {
+      this.wrongEmailBoolean = true;
+      setTimeout(() => {
+        this.wrongEmailBoolean = false;
+      }, 3000);
+    }
+  }
+
+  async checkCredentials(): Promise<boolean> {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let valid = true;
+    if (this.password !== this.repeatPassword) {
+      this.password = '';
+      this.repeatPassword = '';
+      this.showAlert('password');
+      valid = false;
+    }
+    if (!emailPattern.test(this.email) && this.email !== '') {
+      this.showAlert('email');
+      valid = false;
+    }
+    return valid;
   }
 }

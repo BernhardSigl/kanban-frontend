@@ -19,4 +19,15 @@ export class AuthService {
 
     return lastValueFrom(this.http.post(url, raw));
   }
+
+  registerUser(username: string, email: string, password: string) {
+    const url = environment.baseUrl + '/register/';
+    console.log('mailtest', email);
+    const raw = {
+      username,
+      email,
+      password
+    };
+    return this.http.post(url, raw).toPromise();
+  }
 }

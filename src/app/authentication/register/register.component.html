@@ -1,6 +1,5 @@
 <div class="content-position">
   <div class="content-box">
-
     <h1>Register</h1>
 
     <form (ngSubmit)="register()">
@@ -43,7 +42,7 @@
         required
       />
 
-      <button [disabled]="disabledBtn()" type="submit" class="btn btn-dark">
+      <button [disabled]="deactivateFields || disabledBtn()" type="submit" class="btn btn-dark">
         Register
       </button>
     </form>
@@ -53,12 +52,13 @@
     <br />
 
     <span class="login"
-      >Back to login? Click <a [routerLink]="['/login']">here</a></span
+      >Back to login? Click <a [routerLink]="deactivateFields ? null : ['/login']">here</a></span
     >
     <br />
-
   </div>
 </div>
 
-<ngb-alert *ngIf="wrongCredentials">Wrong credentials</ngb-alert>
-
+<div class="alerts">
+  <ngb-alert *ngIf="wrongEmailBoolean">{{ wrongEmailText }}</ngb-alert>
+  <ngb-alert *ngIf="wrongPasswordBoolean">{{ wrongPasswordText }}</ngb-alert>
+</div>

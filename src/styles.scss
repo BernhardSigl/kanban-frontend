@@ -3,7 +3,8 @@
 /* Importing Bootstrap SCSS file. */
 @import "../node_modules/bootstrap/scss/bootstrap";
 
-*, html {
+*,
+html {
   cursor: default !important;
 }
 
@@ -13,9 +14,14 @@ button {
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 input {
   cursor: text !important;
+}
+
+app-kanban {
+  display: flex;
+  justify-content: center;
 }
